@@ -1,7 +1,179 @@
-about:Label("你的账号年龄:"..player.AccountAge..."天")
-about:Label("你的注入器:"..idenifyexecutor())
-about:Label("你的用户名:"..gamePlayers.LocalPlayer.Character.Name)
-about:Label("你现在的服务器名称:"..game:GetService("MarketplaceService"):GetProductInfo(game.PlaceId).Name)
-about:Label("你现在的服务器id:"..gameGameId)
-about:Label("你的用户ID:"..gamePlayers.LocalPlayer.UserId)
-about:Label("获取客户端ID:"..game:GetService("RbxAnalyticsService"):GetClientd())
+local Players = game:GetService("Players")
+local TweenService = game:GetService("TweenService")
+local LocalPlayer = Players.LocalPlayer
+
+-- 创建ScreenGui
+local ScreenGui = Instance.new("ScreenGui")
+ScreenGui.Name = "XKScriptCenterV2Notification"
+ScreenGui.Parent = LocalPlayer:WaitForChild("PlayerGui")
+
+-- 定义全屏Notification样式
+local notificationStyle = {
+    Size = UDim2.new(0, 0, 0, 0),  -- 初始大小为0
+    Position = UDim2.new(0.5, 0, 0.5, 0),  -- 初始位置在屏幕中央
+    AnchorPoint = Vector2.new(0.5, 0.5),  -- 锚点居中
+    BackgroundColor3 = Color3.fromRGB(173, 216, 230),  -- 浅蓝色背景 (Light Blue)
+    BorderSizePixel = 0,  -- 无边框
+    ZIndex = 10,  -- UI层级
+    BackgroundTransparency = 0.9,  -- 30%透明
+}
+
+-- 创建全屏Notification Frame
+local FullScreenFrame = Instance.new("Frame")
+FullScreenFrame.Name = "FullScreenFrame"
+FullScreenFrame.Size = notificationStyle.Size
+FullScreenFrame.Position = notificationStyle.Position
+FullScreenFrame.AnchorPoint = notificationStyle.AnchorPoint
+FullScreenFrame.BackgroundColor3 = notificationStyle.BackgroundColor3
+FullScreenFrame.BorderSizePixel = notificationStyle.BorderSizePixel
+FullScreenFrame.ZIndex = notificationStyle.ZIndex
+FullScreenFrame.BackgroundTransparency = notificationStyle.BackgroundTransparency
+FullScreenFrame.Parent = ScreenGui
+
+-- 创建文本标签
+local TextLabel = Instance.new("TextLabel")
+TextLabel.Size = UDim2.new(1, 0, 1, 0)  -- 填充整个Frame
+TextLabel.Position = UDim2.new(0, 0, 0, 0)  -- 左上角
+TextLabel.Text = "正在加载o脚本"  -- 初始显示的文本
+TextLabel.TextColor3 = Color3.fromRGB(255, 0, 0)  -- 绿色文本
+TextLabel.BackgroundTransparency = 1  -- 透明背景
+TextLabel.TextScaled = true
+TextLabel.TextSize = 48T。
+TextLabel.Font = Enum.Font.Gotham  -- 使用Gotham字体
+TextLabel.ZIndex = 11
+TextLabel.Parent = FullScreenFrame
+
+-- 创建动画信息
+local scaleInfo = TweenInfo.new(
+    1,  -- 持续时间
+    Enum.EasingStyle.Elastic,  -- 弹性缓动
+    Enum.EasingDirection.Out
+)
+
+local moveInfo = TweenInfo.new(
+    1,  -- 持续时间
+    Enum.EasingStyle.Quad,  -- 二次缓动
+    Enum.EasingDirection.Out
+)
+
+local fadeInfo = TweenInfo.new(
+    1,  -- 持续时间
+    Enum.EasingStyle.Sine,
+    Enum.EasingDirection.Out
+)
+
+-- 显示Notification函数
+local function showXKScriptCenterV2Notification(text, duration)
+    -- 播放从小变大的动画
+    local scaleTween = TweenService:Create(FullScreenFrame, scaleInfo, {Size = UDim2.new(0.5, 0, 0.5, 0)})  -- 放大到屏幕的一半
+    scaleTween:Play()
+
+    -- 等待放大动画完成
+    scaleTween.Completed:Wait()
+
+    -- 等待4秒
+    wait(2)
+
+    -- 播放向右移动的动画
+    local moveTween = TweenService:Create(FullScreenFrame, moveInfo, {Position = UDim2.new(1, 0, 0.5, 0)})  -- 向右移动到屏幕右侧
+    moveTween:Play()
+
+    -- 等待移动动画完成
+    moveTween.Completed:Wait()
+
+    -- 播放回到中间的动画
+    local backTween = TweenService:Create(FullScreenFrame, moveInfo, {Position = UDim2.new(0.5, 0, 0.5, 0)})  -- 回到屏幕中央
+    backTween:Play()
+
+    -- 设置文本为“格蕾丝脚本”
+    TextLabel.Text = text
+
+    -- 播放放大动画
+    local finalScaleTween = TweenService:Create(FullScreenFrame, scaleInfo, {Size = UDim2.new(1, 0, 1, 0)})  -- 放大到全屏
+    finalScaleTween:Play()
+
+    -- 等待回到中间的动画完成
+    backTween.Completed:Wait()
+
+    -- 播放淡入动画
+    local fadeIn = TweenService:Create(FullScreenFrame, fadeInfo, {BackgroundTransparency = 0.9})  -- 背景透明度为70%
+    fadeIn:Play()
+
+    -- 等待指定的时间
+    wait(duration)
+
+    -- 播放淡出动画
+    local fadeOut = TweenService:Create(FullScreenFrame, fadeInfo, {BackgroundTransparency = 1})  -- 背景透明度为100%
+    fadeOut:Play()
+    fadeOut.Completed:Wait()
+
+    -- 移除Notification
+    FullScreenFrame:Destroy()
+end
+
+-- 示例：显示“XK脚本中心V2”的全屏浅蓝色背景绿色文字Notification，显示5秒后自动消失
+local text = "Grace 脚本加载成功，作者哦"  -- 要显示的文本
+local displayDuration = 8  -- 显示时间（秒）
+
+showXKScriptCenterV2Notification(text, displayDuration)
+
+local Library = loadstring(game:HttpGet("https://raw.githubusercontent.com/bloodball/-back-ups-for-libs/main/Revenant", true))()
+
+local lib = loadstring(game:HttpGet"https://raw.githubusercontent.com/BINjiaobzx6/BINjiao/refs/heads/main/Vape.txt")() 
+
+local OpenUI = Instance.new("ScreenGui") 
+local ImageButton = Instance.new("ImageButton") 
+local UICorner = Instance.new("UICorner") 
+OpenUI.Name = "OpenUI" 
+OpenUI.Parent = game.CoreGui 
+OpenUI.ZIndexBehavior = Enum.ZIndexBehavior.Sibling 
+ImageButton.Parent = OpenUI 
+ImageButton.BackgroundColor3 = Color3.fromRGB(0, 0, 0) 
+ImageButton.BackgroundTransparency = 0.500 
+ImageButton.Position = UDim2.new(0.0235790554, 0, 0.466334164, 0) 
+ImageButton.Size = UDim2.new(0, 50, 0, 50) 
+ImageButton.Image = "rbxassetid://117494350103589" 
+ImageButton.Draggable = true 
+UICorner.CornerRadius = UDim.new(0, 200) 
+UICorner.Parent = ImageButton 
+ImageButton.MouseButton1Click:Connect(function() 
+  if uihide == false then
+	uihide = true
+	game.CoreGui.ui.Main:TweenSize(UDim2.new(0, 0, 0, 0),"In","Quad",0.4,true)
+else
+	uihide = false
+	game.CoreGui.ui.Main:TweenSize(UDim2.new(0, 560, 0, 319),"Out","Quad",0.4,true)
+		end 
+		
+end)
+
+uihide = false
+
+ local win = lib:Window("格蕾丝Grace丨作者:剑修 小玄奘 哦",Color3.fromRGB(255, 24, 24), Enum.KeyCode.RightControl) 
+  
+ local JK = win:Tab("主要")
+ local tab = win:Tab("ESP")
+ local setup = win:Tab("移除怪")
+ local Dog = win:Tab("其他")
+ 
+setup:Button("上帝模式无敌模式（Godmode）二改",function()
+workspace.DescendantAdded:Connect(function(descendant)
+    if descendant:IsA("ParticleEmitter") then
+        descendant.Rate = descendant.Rate * 10 -- line of code i added for low-graphics players to see the red(blood) rain
+    end
+end)
+
+workspace.DescendantAdded:Connect(function(descendant)
+    if descendant.Name == "base" and descendant:IsA("BasePart") then
+        local player = game.Players.LocalPlayer
+        if player and player.Character and player.Character:FindFirstChild("HumanoidRootPart") then
+            descendant.Position = player.Character.HumanoidRootPart.Position
+
+            Library:Notification({
+        	Text = "检测到拉杆正在破译（哦制作）",
+        	Duration = 10
+            })
+        end
+    end
+end)
+
